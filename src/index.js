@@ -4,6 +4,8 @@ const cors = require('cors');
 
 const app = express();
 
+const config = require('./config');
+
 
 // middlewares
 app.use(bodyParser.json());
@@ -29,7 +31,7 @@ app.get("/", (req, res) => {
 });
 
 
-const PORT = 1337;
+const PORT = config.PORT;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
