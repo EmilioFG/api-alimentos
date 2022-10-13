@@ -8,7 +8,7 @@ const pool = new Pool({
   host: config.DB_HOST,
   database: config.DB_DATABASE,
   password: config.DB_PASSWORD,
-  port: 5432,
+  port: config.DB_PORT,
   ssl: true,
 });
 
