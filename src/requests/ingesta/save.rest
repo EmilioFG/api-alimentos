@@ -1,0 +1,10 @@
+POST http://localhost:1337/ingesta
+Content-Type: application/json
+
+{
+  "cantidad": 1,
+  "usuario": "milo",
+  "alimento": 3,
+  "porcion": 2,
+  "tipoIngesta": 2
+}

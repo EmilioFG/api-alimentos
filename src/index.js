@@ -4,6 +4,7 @@ const cors = require('cors');
 
 const app = express();
 
+
 const config = require('./config');
 
 
@@ -18,11 +19,13 @@ app.use((req, res, next) => {
   next();
 });
 app.use(cors());
-app.options('*', cors());
 
 
 // routes
 app.use('/alimentos', require('./routes/alimento.routes'));
+app.use('/porciones', require('./routes/porcion.routes'));
+app.use('/tiposingesta', require('./routes/tipoingesta.routes'));
+app.use('/ingesta', require('./routes/ingesta.routes'));
 
 
 // simple route

@@ -9,7 +9,10 @@ const pool = new Pool({
   database: config.DB_DATABASE,
   password: config.DB_PASSWORD,
   port: config.DB_PORT,
-  ssl: { rejectUnauthorized: false }
 });
+
+if (config.NODE_ENV !== 'development') {
+  pool.options.ssl = { rejectUnauthorized: false };
+}
 
 module.exports = pool;
