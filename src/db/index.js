@@ -11,7 +11,7 @@ const pool = new Pool({
   port: config.DB_PORT,
 });
 
-if (config.NODE_ENVIROMENT !== 'development') {
+if (config.NODE_ENV !== 'development') {
   pool.options.ssl = { rejectUnauthorized: false };
 }
 
