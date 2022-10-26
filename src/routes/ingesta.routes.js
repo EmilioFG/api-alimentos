@@ -1,9 +1,10 @@
 const { Router } = require('express');
 const router = Router();
 
-const { save } = require('../controllers/ingesta.controllers');
+const { save, getByUsuario } = require('../controllers/ingesta.controllers');
 
 
+router.get('/', getByUsuario);
 router.post('/', save);
 
 

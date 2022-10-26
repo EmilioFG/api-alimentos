@@ -22,5 +22,20 @@ INGESTA.save = async ({
   VALUES (${cantidad}, (SELECT CURRENT_TIMESTAMP), '${usuario}', ${alimento}, ${porcion}, ${tipoIngesta});
 `);
 
+INGESTA.getByUsuario = async (usuario) => await POOL.query(`
+  SELECT i.usuario,
+        a.nombre alimento,
+        a.descripcion descripcionalimento,
+        p.nombre porcion,
+        t.nombre tipoingesta,
+        SUM(i.cantidad * a.calorias) calorias
+  FROM ingesta i
+      JOIN alimento a on i.alimento = a.id
+      JOIN porcion p on i.porcion = p.id
+      JOIN tipoingesta t on i.tipoingesta = t.id
+  WHERE i.usuario = '${usuario}'
+  GROUP BY i.usuario, a.nombre, a.descripcion, p.nombre, t.nombre;
+`);
+
 
 module.exports = INGESTA;
