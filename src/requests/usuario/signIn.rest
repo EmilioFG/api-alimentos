@@ -1,0 +1,12 @@
+POST http://localhost:1337/usuario/sign-in
+Content-Type: application/json
+
+{
+  "usuario": "kr",
+  "password": "kr",
+  "nombre": "Khrystiann",
+  "peso": 180,
+  "estatura": 1.80,
+  "fechanacimiento": "1997-01-25",
+  "genero": "H"
+}
