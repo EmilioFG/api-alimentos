@@ -36,14 +36,14 @@ const save = async (req, res) => {
 const getByUsuario = async (req, res) => {
   try {
 
-    const { usuario } = req.query;
-    if (!usuario) handleError(res, "Debe de enviar un usuario");
+    const { user } = req;
+    if (!user) handleError(res, "Debe de enviar un usuario");
 
-    const responseUsuario = await USUARIO.getByUsuario(usuario);
+    const responseUsuario = await USUARIO.getByUsuario(user);
     if (responseUsuario.length < 0) handleError(res, "El usuario no existe");
 
     const infoUsuario = responseUsuario.rows[0];
-    const ingestas = await INGESTA.getByUsuario(usuario);
+    const ingestas = await INGESTA.getByUsuario(user);
     const metaCalorica = calculoMetaCalorica(infoUsuario);
 
     let caloriasConsumidas = 0;
