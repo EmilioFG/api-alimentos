@@ -1,18 +1,18 @@
 const { Pool } = require("pg");
 
-const config = require('../config');
+const CONFIG = require('../config');
 
 
-const pool = new Pool({
-  user: config.DB_USER,
-  host: config.DB_HOST,
-  database: config.DB_DATABASE,
-  password: config.DB_PASSWORD,
-  port: config.DB_PORT,
+const POOL = new Pool({
+  user: CONFIG.DB_USER,
+  host: CONFIG.DB_HOST,
+  database: CONFIG.DB_DATABASE,
+  password: CONFIG.DB_PASSWORD,
+  port: CONFIG.DB_PORT,
 });
 
-if (config.NODE_ENV !== 'development') {
-  pool.options.ssl = { rejectUnauthorized: false };
+if (CONFIG.NODE_ENV !== 'development') {
+  POOL.options.ssl = { rejectUnauthorized: false };
 }
 
-module.exports = pool;
+module.exports = POOL;

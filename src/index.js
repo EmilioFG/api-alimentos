@@ -5,7 +5,7 @@ const cors = require('cors');
 const app = express();
 
 
-const config = require('./config');
+const CONFIG = require('./config');
 
 
 // middlewares
@@ -27,15 +27,16 @@ app.use('/alimentos', require('./routes/alimento.routes'));
 app.use('/porciones', require('./routes/porcion.routes'));
 app.use('/tiposingesta', require('./routes/tipoingesta.routes'));
 app.use('/ingesta', require('./routes/ingesta.routes'));
+app.use('/usuario', require('./routes/usuario.routes'));
 
 
 // simple route
 app.get("/", (req, res) => {
-  res.json({ data: "This is the root page" });
+  res.send({ data: "This is the root page" });
 });
 
 
-const PORT = config.PORT;
+const PORT = CONFIG.PORT;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });

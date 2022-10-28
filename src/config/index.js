@@ -7,3 +7,4 @@ exports.DB_PASSWORD = process.env.DB_PASSWORD || '';
 exports.DB_PORT = process.env.DB_PORT || 5432
 exports.PORT = process.env.PORT || 1337;
 exports.NODE_ENV = process.env.NODE_ENV || 'development';
+exports.SECRET_SESSION = process.env.SECRET_SESSION || 'superzombie';
