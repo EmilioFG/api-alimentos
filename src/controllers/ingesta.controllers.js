@@ -7,22 +7,25 @@ const { handleError } = require('../utils');
 const save = async (req, res) => {
   try {
 
-    const formData = req.body;
     const {
       cantidad,
-      usuario,
       alimento,
       porcion,
       tipoIngesta,
-    } = formData;
+    } = req.body;
 
     if (!cantidad) handleError(res, "Debe de enviar una cantidad");
-    if (!usuario) handleError(res, "Debe de enviar un usuario");
     if (!alimento) handleError(res, "Debe de enviar un alimento");
     if (!porcion) handleError(res, "Debe de enviar una porcion");
     if (!tipoIngesta) handleError(res, "Debe de enviar un tipoIngesta");
 
-    const ingesta = await INGESTA.save(formData);
+    const ingesta = await INGESTA.save({
+      cantidad,
+      alimento,
+      porcion,
+      tipoIngesta,
+      usuario: req.user,
+    });
     res.json(ingesta.rowCount)
 
   } catch (error) {
