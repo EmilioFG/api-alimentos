@@ -30,5 +30,9 @@ USUARIO.getByUsuario = async (usuario) => await POOL.query(`
   FROM usuario U WHERE U.usuario = $1;`, [usuario]
 );
 
+USUARIO.updateToken = async (token, usuario) => await POOL.query(`
+  UPDATE usuario SET token = '${token}' WHERE usuario = '${usuario}';
+`);
+
 
 module.exports = USUARIO;

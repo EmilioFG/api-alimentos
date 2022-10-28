@@ -1,12 +1,10 @@
 const USUARIO = require('../models/usuario.models');
 
-const { handleError } = require('../utils');
+const { handleError, bcryptPassword, generateToken } = require('../utils');
 
 
 const signIn = async (req, res) => {
   try {
-
-    const formData = req.body;
     const {
       usuario,
       password,
@@ -15,7 +13,7 @@ const signIn = async (req, res) => {
       estatura,
       fechanacimiento,
       genero,
-    } = formData;
+    } = req.body;
 
     if (!usuario) handleError(res, "Debe de enviar un usuario");
     if (!password) handleError(res, "Debe de enviar un password");
@@ -28,7 +26,17 @@ const signIn = async (req, res) => {
     const usuarioExiste = await USUARIO.getByUsuario(usuario);
     if (usuarioExiste.rows > 0) handleError(res, "El usuario que intenta registrar ya existe");
 
-    const newUsuario = await USUARIO.signIn(formData);
+    const hashedPassword = await bcryptPassword(password);
+    const newUsuario = await USUARIO.signIn({
+      usuario,
+      nombre,
+      peso,
+      estatura,
+      fechanacimiento,
+      genero,
+      password: hashedPassword,
+    });
+
     res.json(newUsuario.rowCount);
   } catch (error) {
     const message =
@@ -40,7 +48,29 @@ const signIn = async (req, res) => {
   }
 }
 
+const logIn = async (req, res) => {
+  try {
+    const { usuario, password } = req.body;
+
+    if (!usuario) handleError(res, "Debe de enviar un usuario");
+    if (!password) handleError(res, "Debe de enviar un password");
+
+    const usuarioExiste = await USUARIO.getByUsuario(usuario);
+    if (usuarioExiste.rows <= 0) handleError(res, "El usuario no existe");
+
+    const hashedPassword = usuarioExiste.rows[0].password;
+    const token = generateToken(password, hashedPassword);
+
+    await USUARIO.updateToken(token, usuario);
+
+    res.json({ token });
+  } catch (error) {
+    handleError(res, error.message);
+  }
+}
+
 
 module.exports = {
   signIn,
+  logIn,
 }
