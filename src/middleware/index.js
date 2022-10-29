@@ -9,7 +9,7 @@ const verifyToken = (req, res, next) => {
   if (authorization === 'null')  return handleError(res, "No tiene acceso a este recurso");
 
   const decode = JWT.decode(authorization, CONFIG.SECRET_SESSION);
-  req.user = decode;
+  req.token = authorization;
   next();
 }
 

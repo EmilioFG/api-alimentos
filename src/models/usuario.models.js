@@ -34,5 +34,10 @@ USUARIO.updateToken = async (token, usuario) => await POOL.query(`
   UPDATE usuario SET token = '${token}' WHERE usuario = '${usuario}';
 `);
 
+USUARIO.getByToken = async (token) => await POOL.query(`
+  SELECT U.*, EXTRACT(YEAR FROM AGE((SELECT CURRENT_TIMESTAMP), fechanacimiento)) edad
+  FROM usuario U WHERE U.token = '${token}';`
+);
+
 
 module.exports = USUARIO;

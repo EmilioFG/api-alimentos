@@ -62,7 +62,7 @@ const logIn = async (req, res) => {
     const token = generateToken(password, hashedPassword);
 
     await USUARIO.updateToken(token, usuario);
-
+    req.usuario = usuario;
     res.json({ token });
   } catch (error) {
     handleError(res, error.message);
