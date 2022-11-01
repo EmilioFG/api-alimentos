@@ -1,7 +1,7 @@
 const INGESTA = require("../models/ingesta.models");
 const USUARIO = require("../models/usuario.models");
 
-const { handleError } = require('../utils');
+const { handleError, formatearFecha } = require('../utils');
 
 
 const save = async (req, res) => {
@@ -43,14 +43,17 @@ const save = async (req, res) => {
 const getByUsuario = async (req, res) => {
   try {
 
-    const { token } = req;
+    const { token, query } = req;
     if (!token) handleError(res, "Debe de enviar un usuario");
 
-    const responseUsuario = await USUARIO.getByToken(token);
+    const { fecha } = query;
+    const filtroFecha = (!fecha || fecha === 'undefined') ? formatearFecha(new Date()) : fecha;
+
+    const responseUsuario = await USUARIO.getByToken(token,);
     if (responseUsuario.rows.length <= 0) return handleError(res, "El usuario no existe");
 
     const infoUsuario = responseUsuario.rows[0];
-    const ingestas = await INGESTA.getByUsuario(infoUsuario.usuario);
+    const ingestas = await INGESTA.getByUsuario(infoUsuario.usuario, filtroFecha);
     const metaCalorica = calculoMetaCalorica(infoUsuario);
 
     let caloriasConsumidas = 0;
