@@ -1,1 +1,3 @@
-GET http://localhost:1337/ingesta?usuario=milo
+GET http://localhost:1337/ingesta?usuario=milo?fecha=2022-10-01
+Content-Type: 'application/json'
+Authorization: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.ImtyIg.AEDaB2XMBt3xkLj-oWLuIm-YqWoiBpGZZQs0P7NQirI

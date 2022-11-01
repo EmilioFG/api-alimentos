@@ -22,7 +22,7 @@ INGESTA.save = async ({
   VALUES (${cantidad}, (SELECT CURRENT_TIMESTAMP), '${usuario}', ${alimento}, ${porcion}, ${tipoIngesta});
 `);
 
-INGESTA.getByUsuario = async (usuario) => await POOL.query(`
+INGESTA.getByUsuario = async (usuario, fecha) => await POOL.query(`
   SELECT i.usuario,
         a.nombre alimento,
         a.descripcion descripcionalimento,
@@ -33,7 +33,7 @@ INGESTA.getByUsuario = async (usuario) => await POOL.query(`
       JOIN alimento a on i.alimento = a.id
       JOIN porcion p on i.porcion = p.id
       JOIN tipoingesta t on i.tipoingesta = t.id
-  WHERE i.usuario = '${usuario}'
+  WHERE i.usuario = '${usuario}' AND i.fecha >= '${fecha}' AND i.fecha <= '${fecha}'
   GROUP BY i.usuario, a.nombre, a.descripcion, p.nombre, t.nombre;
 `);
 
