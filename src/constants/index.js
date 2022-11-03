@@ -1,0 +1,10 @@
+const META_CARBOHIDRATOS = 381;
+const META_PROTEINA = 63;
+const META_GRASA = 84;
+
+
+module.exports = {
+  META_CARBOHIDRATOS,
+  META_PROTEINA,
+  META_GRASA,
+}

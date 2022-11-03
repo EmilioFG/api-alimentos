@@ -28,7 +28,10 @@ INGESTA.getByUsuario = async (usuario, fecha) => await POOL.query(`
         a.descripcion descripcionalimento,
         p.nombre porcion,
         t.nombre tipoingesta,
-        SUM(i.cantidad * a.calorias) calorias
+        SUM(i.cantidad * a.calorias) calorias,
+        SUM(i.cantidad * a.carbohidratos) carbohidratos,
+        SUM(i.cantidad * a.proteinas) proteinas,
+        SUM(i.cantidad * a.grasas) grasas
   FROM ingesta i
       JOIN alimento a on i.alimento = a.id
       JOIN porcion p on i.porcion = p.id

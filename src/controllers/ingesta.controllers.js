@@ -2,6 +2,7 @@ const INGESTA = require("../models/ingesta.models");
 const USUARIO = require("../models/usuario.models");
 
 const { handleError, formatearFecha } = require('../utils');
+const { META_CARBOHIDRATOS, META_PROTEINA, META_GRASA } = require('../constants');
 
 
 const save = async (req, res) => {
@@ -54,9 +55,12 @@ const getByUsuario = async (req, res) => {
 
     const infoUsuario = responseUsuario.rows[0];
     const ingestas = await INGESTA.getByUsuario(infoUsuario.usuario, filtroFecha);
-    const metaCalorica = calculoMetaCalorica(infoUsuario);
+    const metaCalorica = calculoMetaCalorica(infoUsuario).toFixed(2);
 
     let caloriasConsumidas = 0;
+    let carbohidratosConsumidos = 0;
+    let proteinasConsumidas = 0;
+    let grasaConsumida = 0;
 
     const data = {};
     for (let ingesta of ingestas.rows) {
@@ -65,7 +69,10 @@ const getByUsuario = async (req, res) => {
         calorias,
         alimento,
         descripcionalimento,
-        porcion
+        porcion,
+        carbohidratos,
+        proteinas,
+        grasas,
       } = ingesta;
 
       if (!data[tipoingesta]) {
@@ -85,10 +92,22 @@ const getByUsuario = async (req, res) => {
       });
 
       caloriasConsumidas += +calorias;
+      carbohidratosConsumidos += +carbohidratos;
+      proteinasConsumidas += +proteinas;
+      grasaConsumida += +grasas;
     }
 
+    caloriasConsumidas = +caloriasConsumidas.toFixed(2);
+    carbohidratosConsumidos = +carbohidratosConsumidos.toFixed(2);
+    proteinasConsumidas = +proteinasConsumidas.toFixed(2);
+    grasaConsumida = +grasaConsumida.toFixed(2);
+
     const porcentajeCaloriasConsumidas = ((caloriasConsumidas / metaCalorica).toFixed(2)) * 100;
-    const caloriasRestantes = (metaCalorica - caloriasConsumidas)
+    const caloriasRestantes = (metaCalorica - caloriasConsumidas).toFixed(2);
+    const porcentajeCarbohidratosConsumidos = calculoMetaCarbohidratos(carbohidratosConsumidos);
+    const porcentajeProteinasConsumidas = calculoMetaProteina(proteinasConsumidas);
+    const porcentajeGrasaConsumida = calculoMetaGrasa(grasaConsumida);
+
     const response = {
       ingesta: [],
       informacionCalorica: {
@@ -96,6 +115,12 @@ const getByUsuario = async (req, res) => {
         caloriasRestantes,
         caloriasConsumidas,
         porcentajeCaloriasConsumidas,
+        carbohidratosConsumidos,
+        porcentajeCarbohidratosConsumidos,
+        proteinasConsumidas,
+        porcentajeProteinasConsumidas,
+        grasaConsumida,
+        porcentajeGrasaConsumida,
       },
     };
 
@@ -113,6 +138,12 @@ const calculoMetaCalorica = ({ peso, estatura, edad, genero }) => {
   const calculo = ((10 * +peso) + (6.25 * +estatura) - (5 * +edad));
   return (genero === 'H') ? calculo + 5 : calculo - 161;
 };
+
+const calculoMetaCarbohidratos = (value) => ((value / META_CARBOHIDRATOS).toFixed(2) * 100);
+
+const calculoMetaProteina = (value) => ((value / META_PROTEINA).toFixed(2) * 100);
+
+const calculoMetaGrasa = (value) => ((value / META_GRASA).toFixed(2) * 100);
 
 
 module.exports = {
