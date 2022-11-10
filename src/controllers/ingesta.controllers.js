@@ -50,7 +50,7 @@ const getByUsuario = async (req, res) => {
     const { fecha } = query;
     const filtroFecha = (!fecha || fecha === 'undefined') ? formatearFecha(new Date()) : fecha;
 
-    const responseUsuario = await USUARIO.getByToken(token,);
+    const responseUsuario = await USUARIO.getByToken(token);
     if (responseUsuario.rows.length <= 0) return handleError(res, "El usuario no existe");
 
     const infoUsuario = responseUsuario.rows[0];
@@ -104,9 +104,9 @@ const getByUsuario = async (req, res) => {
 
     const porcentajeCaloriasConsumidas = ((caloriasConsumidas / metaCalorica).toFixed(2)) * 100;
     const caloriasRestantes = (metaCalorica - caloriasConsumidas).toFixed(2);
-    const porcentajeCarbohidratosConsumidos = calculoMetaCarbohidratos(carbohidratosConsumidos);
-    const porcentajeProteinasConsumidas = calculoMetaProteina(proteinasConsumidas);
-    const porcentajeGrasaConsumida = calculoMetaGrasa(grasaConsumida);
+    const porcentajeCarbohidratosConsumidos = calculoMetaCarbohidratos(carbohidratosConsumidos).toFixed(2);
+    const porcentajeProteinasConsumidas = calculoMetaProteina(proteinasConsumidas).toFixed(2);
+    const porcentajeGrasaConsumida = calculoMetaGrasa(grasaConsumida).toFixed(2);
 
     const response = {
       ingesta: [],

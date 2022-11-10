@@ -28,6 +28,7 @@ app.use('/porciones', require('./routes/porcion.routes'));
 app.use('/tiposingesta', require('./routes/tipoingesta.routes'));
 app.use('/ingesta', require('./routes/ingesta.routes'));
 app.use('/usuario', require('./routes/usuario.routes'));
+app.use('/reportes', require('./routes/reporte.routes'));
 
 
 // simple route
